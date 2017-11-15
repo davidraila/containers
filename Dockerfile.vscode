@@ -1,5 +1,0 @@
-FROM fedora
-RUN dnf -y update &&\
-  curl -o /tmp/vscode.rpm https://go.microsoft.com/fwlink/?LinkID=760866 &&\
-  dnf -y install /tmp/vscode.rpm &&\
-  rm -f /tmp/vscode.rpm
