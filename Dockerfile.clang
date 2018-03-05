@@ -1,0 +1,10 @@
+FROM alpine
+
+RUN apk update
+RUN apk add git
+
+RUN mkdir /usr/local/src && cd /usr/local/src && git clone http://llvm.org/git/llvm.git && git clone http://llvm.org/git/clang.git llvm/tools/clang && git clone http://llvm.org/git/clang-tools-extra.git llvm/tools/clang/tools/clang-tools-extra
+
+
+VOLUME /usr/local/clang
+VOLUME /usr/local/src/llvm

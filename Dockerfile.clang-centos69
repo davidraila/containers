@@ -1,0 +1,4 @@
+FROM dr/centos69
+
+VOLUME /usr/local/clang
+

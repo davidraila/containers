@@ -1,0 +1,6 @@
+FROM dr/centos69
+
+RUN yum -y install gcc awk binutils gzip bzip2 make tar perl autoconf automake autogen \
+   gmp gmp-devel mpfr mpfr-devel curl
+
+RUN cd /usr/local/src/gcc && curl https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz | tar xzf -

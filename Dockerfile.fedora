@@ -1,0 +1,9 @@
+FROM fedora
+
+RUN dnf -y update
+
+RUN dnf -y install \
+   yum-plugin-fastestmirror sudo
+
+
+
