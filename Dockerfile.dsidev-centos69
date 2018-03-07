@@ -1,0 +1,20 @@
+FROM dr/centos69
+
+#RUN cd /usr/local/src/gcc && curl https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz | tar xzf -
+
+FROM dr/centos69                                                                          
+LABEL maintainer=raila@illinois.edu                                                      
+LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
+LABEL purpose="hpssdsi development against https://github.com/ncsa/globus-gridftp-hpss-dsi.git"                                                                                   
+LABEL platform="centos:6.9"                                                              
+                                                                                         
+RUN yum -y install install centos-release-scl scl-utils && yum -y install devtoolset-7 epel-release \ 
+   ksh libtool-ltdl-devel python27 libtool git19 autogen-libopts-devel openssl-devel glibc-utils \
+   autogen autoconf automake less libtirpc-devel cmake3 cmake3-gui 
+
+ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
+
+#VOLUME /hpss_src/hpss-7.4.3.3-0.el6
+#VOLUME /usr/local/globus-6
+#RUN mkdir -p /hpss_src/hpss-7.4.3.3-0.el6 && ln -s /hpss_src/hpss-7.4.3.3-0.el6 /opt/hpss
+#RUN echo "***********************************************************" && echo "HPSS NOT IN IMAGE DUE TO COPYRIGHT, add from rpm or other means to /opt/hpss" && echo "************************************************************"

@@ -1,7 +1,9 @@
 ##############################################################
 # Author: raila@illinois.edu
 ##############################################################
-IMAGES 	:= fedora code-insiders dsidev centos69 gcc7 gcc7-centos69
+IMAGES 	:= fedora code-insiders clang gcc7 \
+				dev-centos-69
+#dsidev centos69  gcc7-centos69 dsidev-centos69 
 VOLUMES	:= gcc7-src clang-src
 ORG 		:= dr/
 

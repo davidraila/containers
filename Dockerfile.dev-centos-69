@@ -1,0 +1,10 @@
+#
+# Builds image with centos69 developer tooling
+#
+FROM dr/centos69
+
+RUN yum -y install centos-release-scl scl-utils epel-release
+RUN yum -y install devtoolset-7 cmake3\* python27-python
+
+ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
+
