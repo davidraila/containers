@@ -1,6 +1,6 @@
 FROM debian
 
-RUN spt-get update
+RUN apt-get update
 RUN apt add git
 
 RUN mkdir /usr/local/src && cd /usr/local/src && git clone https://git.llvm.org/git/llvm.git && git clone https://git.llvm.org/git/clang.git llvm/tools/clang && git clone https://git.llvm.org/git/clang-tools-extra.git llvm/tools/clang/tools/clang-tools-extra && git clone https://git.llvm.org/git/compiler-rt.git llvm/projects/compiler-rt && git clone https://git.llvm.org/git/libcxx.git llvm/projects/libcxx && git clone https://git.llvm.org/git/libcxxabi.git llvm/projects/libcxxabi
