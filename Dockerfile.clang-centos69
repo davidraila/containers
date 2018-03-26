@@ -9,8 +9,8 @@ RUN echo 'mkdir /usr/local/src/build && cd /usr/local/src/build && cmake3 -G "Un
 #
 FROM scratch
 COPY --from=build /usr/local/clang /usr/local/clang
-ENTRYPOINT -none-
-CMD -none-
+ENTRYPOINT ['-']
+#CMD -none-
 VOLUME /usr/local/clang
 
 
