@@ -1,4 +1,4 @@
-FROM centos:6.9
+FROM centos:6.9 as build
 
 RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
 RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27
@@ -9,10 +9,11 @@ RUN echo 'git version && cd /usr/local/src && git clone --depth=1 https://git.ll
 RUN echo 'mkdir /usr/local/src/build && cd /usr/local/src/build && cmake3 -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) all install' | scl enable $(scl -l) --
 #RUN echo 'cd /usr/local/src/build && make -j$(grep -c ^processor /proc/cpuinfo)' | scl enable $(scl -l) --
 # RUN rm -rf /usr/local/src/{llvm,build}
+
+FROM scratch
 VOLUME /usr/local/clang
-ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
-
-
+COPY --from=build /usr/local/clang /usr/local/clang
+#ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
 
 
 
