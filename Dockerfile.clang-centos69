@@ -1,4 +1,25 @@
 FROM dr/centos69
 
 VOLUME /usr/local/clang
+VOLUME /usr/local/src/llvm
 
+RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
+RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27
+
+
+RUN echo 'cd /usr/local/src && git clone --depth=1 https://git.llvm.org/git/llvm.git && git clone --depth=1 https://git.llvm.org/git/clang.git llvm/tools/clang && git clone --depth=1 https://git.llvm.org/git/clang-tools-extra.git llvm/tools/clang/tools/clang-tools-extra && git clone --depth=1 https://git.llvm.org/git/compiler-rt.git llvm/projects/compiler-rt && git clone --depth=1 https://git.llvm.org/git/libcxx.git llvm/projects/libcxx && git clone --depth=1 https://git.llvm.org/git/libcxxabi.git llvm/projects/libcxxabi' | scl enable $(scl -l) --
+RUN echo 'mkdir /usr/local/src/build && cd /usr/local/src/build && cmake3 -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm' | scl enable $(scl -l) --
+RUN echo 'make -j$(grep -c ^processor /proc/cpuinfo) all install' | scl enable $(scl -l) --
+
+
+#VOLUME /usr/local/clang
+#VOLUME /usr/local/src/llvm
+#
+#RUN yum -y install sudo centos-release-scl scl-utils && yum -y update
+#RUN yum -y install devtoolset-6-build devtoolset-6-make devtoolset-6-gcc devtoolset-6-gcc-c++ devtoolset-6-gdb epel-release
+#RUN yum -y install ksh libtool-ltdl-devel python27 libtool git19 autogen-libopts-devel openssl-devel glibc-utils \
+#   autogen autoconf automake less libtirpc-devel cmake3 cmake3-gui
+#RUN yum -y clean all
+#
+#ENTRYPOINT ["scl", "enable", "python27", "--"]
+ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
