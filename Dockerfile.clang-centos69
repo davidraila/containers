@@ -1,4 +1,4 @@
-FROM dr/centos69
+FROM centos:6.9
 
 VOLUME /usr/local/clang
 VOLUME /usr/local/src/llvm
