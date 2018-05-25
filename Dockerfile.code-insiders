@@ -1,9 +1,9 @@
-FROM dr/fedora
+FROM davidraila/fedora
 
 VOLUME /usr/share/code-insiders
 VOLUME /usr/local/code-insiders
 
-RUN dnf -y install git wget
+RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-fonts dejavu\*font\* # plasma-breeze oxygen-fonts 
    
 #
 # wget and install vscode-insiders
