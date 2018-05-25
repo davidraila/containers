@@ -1,0 +1,11 @@
+FROM davidraila/fedora
+   
+#
+# wget and install vscode-insiders
+#
+VOLUME /usr/local/reveal
+RUN dnf -y install npm git bzip2 xz
+WORKDIR /usr/local
+RUN git clone https://github.com/hakimel/reveal.js.git reveal
+RUN cd reveal.js && npm install
+
