@@ -1,8 +1,8 @@
-FROM dr/centos69
+FROM davidraila/centos69
 
 #RUN cd /usr/local/src/gcc && curl https://ftp.gnu.org/gnu/mpc/mpc-1.1.0.tar.gz | tar xzf -
 
-FROM dr/centos69                                                                          
+FROM davidraila/centos69                                                                          
 LABEL maintainer=raila@illinois.edu                                                      
 LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
 LABEL purpose="hpssdsi development against https://github.com/ncsa/globus-gridftp-hpss-dsi.git"                                                                                   
