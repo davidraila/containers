@@ -1,4 +1,4 @@
-FROM dr/code-insiders
+FROM davidraila/code-insiders
 
 RUN dnf -y install \
 # tools \
