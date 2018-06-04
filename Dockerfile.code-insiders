@@ -5,9 +5,6 @@ RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-f
 #
 # wget and install vscode-insiders
 #
-#RUN wget -cqO- https://go.microsoft.com/fwlink/?LinkID=760866 -O /tmp/vscode.rpm  &&\
-  #dnf -y install /tmp/vscode.rpm && rm -f /tmp/vscode.rpm && ln -s /usr/share/code-insiders/bin/code-insiders /usr/local/bin/code
-
 RUN echo 'wget -cqO- https://go.microsoft.com/fwlink/?LinkID=760866 -O /tmp/vscode.rpm  &&\
-  dnf -y install /tmp/vscode.rpm && rm -f /tmp/vscode.rpm' > /usr/local/update-code && chmod 755 /usr/local/update-code && /usr/local/update-code
+  dnf -y install /tmp/vscode.rpm && rm -f /tmp/vscode.rpm' > /usr/local/bin/update-code && chmod 755 /usr/local/bin/update-code && /usr/local/bin/update-code
 
