@@ -1,6 +1,6 @@
 FROM davidraila/fedora
 
-RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-fonts dejavu\*font\* # plasma-breeze oxygen-fonts 
+RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-fonts dejavu\*font\* gcc golang # plasma-breeze oxygen-fonts 
    
 #
 # wget and install vscode-insiders
