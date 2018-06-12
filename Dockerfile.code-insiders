@@ -1,6 +1,7 @@
 FROM davidraila/fedora
+VOLUME /usr/share/code-insiders
 
-RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-fonts dejavu\*font\* gcc golang # plasma-breeze oxygen-fonts 
+RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-fonts dejavu\*font\* gcc golang && dnf -y update && dnf -y clean all
    
 #
 # wget and install vscode-insiders
@@ -8,3 +9,4 @@ RUN dnf -y install git wget kde-runtime adobe-source-code-pro-fonts liberation-f
 RUN echo 'wget -cqO- https://go.microsoft.com/fwlink/?LinkID=760866 -O /tmp/vscode.rpm  &&\
   dnf -y install /tmp/vscode.rpm && rm -f /tmp/vscode.rpm' > /usr/local/bin/update-code && chmod 755 /usr/local/bin/update-code && /usr/local/bin/update-code
 
+RUN dnf -y clean all
