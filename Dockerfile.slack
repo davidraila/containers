@@ -1,0 +1,17 @@
+FROM ubuntu
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+
+
+RUN apt-get -y update \
+	&& DEBIAN_FRONTEND=noninteractive apt-get -y install \
+		sudo \
+		libasound2 \
+		curl \
+	&& curl https://downloads.slack-edge.com/linux_releases/slack-desktop-3.3.3-amd64.deb -o /tmp/slack.deb \
+	&& DEBIAN_FRONTEND=noninteractive apt-get -y autoremove \
+		curl \
+	&& DEBIAN_FRONTEND=noninteractive apt-get -y install \
+		/tmp/slack.deb \
+	&& rm -rf /tmp/slack.deb \
+	&& rm -rf /var/lib/apt/lists/*
