@@ -1,0 +1,23 @@
+# RUN:
+# docker run -v /tmp/.X11-unix:/tmp/.X11-unix -v /dev/snd:/dev/snd -e DISPLAY=unix$DISPLAY twb
+#
+
+from ubuntu
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+run apt-get -y update \
+  && DEBIAN_FRONTEND=noninteractive apt-get -y install locales-all firefox sudo pcmanfm pcmanfm-qt nomacs smplayer xfsprogs ecryptfs-utils \
+  && rm -rf /var/lib/apt/lists/*
+
+LABEL runcmd="docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/1000/pulse:/run/user/1000/pulse -v /etc/machine-id:/etc/machine-id -v /dev/shm:/dev/shm --device /dev/dri --device /dev/snd -e DISPLAY=:0  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /etc/sudoers:/etc/sudoers:ro -v /etc/group:/etc/group:ro -v /etc/localtime:/etc/localtime:ro -v /dev:/dev --privileged"
+
+#dnf -y install gnupg tar xz freetype dbus-x11 fontconfig alsa-lib firefox
+
+#ENV TOR_VERSION 5.0.4
+#ENV TOR_FINGERPRINT 0x4E2C6E8793298290
+
+
+#USER ${USER}
+#CMD /usr/local/bin/Browser/start-tor-browser
