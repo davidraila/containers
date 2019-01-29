@@ -1,0 +1,9 @@
+FROM fedora
+
+RUN dnf -y update &&\
+  dnf -y install yum-plugin-fastestmirror sudo &&\
+  dnf -y clean all
+
+LABEL description="fedora with support to run as the calling user"
+LABEL run.args="--user $(id -u $user):$(id -g $group) $(id -G | sed s/`id -g`\// | sed s/' '/' --group-add '/g)"
+
