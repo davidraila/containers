@@ -2,13 +2,14 @@ FROM ubuntu
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+#LABEL docker_args="-it -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/1000/pulse:/run/user/1000/pulse -v /etc/machine-id:/etc/machine-id -v /dev/shm:/dev/shm --device /dev/dri --device /dev/snd -e DISPLAY=:0  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /etc/sudoers:/etc/sudoers:ro -v /etc/group:/etc/group:ro -v /etc/localtime:/etc/localtime:ro -v /dev:/dev --privileged"
 
 RUN apt-get -y update \
 	&& DEBIAN_FRONTEND=noninteractive apt-get -y install \
 		sudo \
 		libasound2 \
 		curl \
-	&& curl https://downloads.slack-edge.com/linux_releases/slack-desktop-3.3.3-amd64.deb -o /tmp/slack.deb \
+	&& curl https://downloads.slack-edge.com/linux_releases/slack-desktop-3.3.7-amd64.deb -o /tmp/slack.deb \
 	&& DEBIAN_FRONTEND=noninteractive apt-get -y autoremove \
 		curl \
 	&& DEBIAN_FRONTEND=noninteractive apt-get -y install \

@@ -12,6 +12,8 @@ run apt-get -y update \
   && rm -rf /var/lib/apt/lists/*
 
 LABEL runcmd="docker run --rm -it -v /tmp/.X11-unix:/tmp/.X11-unix -v /run/user/1000/pulse:/run/user/1000/pulse -v /etc/machine-id:/etc/machine-id -v /dev/shm:/dev/shm --device /dev/dri --device /dev/snd -e DISPLAY=:0  -v /etc/passwd:/etc/passwd:ro -v /etc/group:/etc/group:ro -v /etc/shadow:/etc/shadow:ro -v /etc/sudoers:/etc/sudoers:ro -v /etc/group:/etc/group:ro -v /etc/localtime:/etc/localtime:ro -v /dev:/dev --privileged"
+LABEL mntcmd="mount -t ecryptfs $SRC $DST -o key=passphrase,ecryptfs_cipher=aes,ecryptfs_key_bytes=16,ecryptfs_passthrough=no,ecryptfs_enable_filename_crypto=yes"
+
 
 #dnf -y install gnupg tar xz freetype dbus-x11 fontconfig alsa-lib firefox
 
