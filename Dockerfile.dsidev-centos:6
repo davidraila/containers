@@ -1,0 +1,25 @@
+FROM davidraila/dev-centos:6
+
+LABEL maintainer=raila@illinois.edu                                                      
+LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
+LABEL purpose="hpssdsi development against https://github.com/ncsa/globus-gridftp-hpss-dsi.git"                                                                                   
+LABEL platform="centos:6"                                                              
+                                                                                         
+RUN yum -y install \
+   autogen \
+   autoconf \
+   automake \
+   libtool-ltdl-devel \
+   python27 \
+   libtool \
+   autogen-libopts-devel \
+   openssl-devel \
+   glibc-utils \
+   libtirpc-devel \
+   libtool-ltdl \
+   lib\*san.\* 
+
+ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
+
+#RUN mkdir -p /hpss_src/hpss-7.4.3.3-0.el6 && ln -s /hpss_src/hpss-7.4.3.3-0.el6 /opt/hpss
+#RUN echo "***********************************************************" && echo "HPSS NOT IN IMAGE DUE TO COPYRIGHT, add from rpm or other means to /opt/hpss" && echo "************************************************************"

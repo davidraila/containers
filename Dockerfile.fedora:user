@@ -1,7 +1,8 @@
 FROM fedora
 
-RUN dnf -y update &&\
-  dnf -y install yum-plugin-fastestmirror sudo &&\
+RUN dnf -y install yum-plugin-fastestmirror &&\
+  dnf -y update &&\
+  dnf -y install sudo &&\
   dnf -y clean all
 
 LABEL description="fedora with support to run as the calling user"

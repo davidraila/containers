@@ -2,15 +2,23 @@
 # clang binaries in data container
 #
 FROM fedora as build
-RUN dnf -y update && dnf -y install @'C Development Tools and Libraries' git cmake
+RUN dnf -y update 
+RUN dnf -y install @'C Development Tools and Libraries' \
+	git cmake z3-devel autoconf automake cmake 
 
 RUN cd /usr/local/src && git clone --depth=1 https://git.llvm.org/git/llvm.git && git clone --depth=1 https://git.llvm.org/git/clang.git llvm/tools/clang && git clone --depth=1 https://git.llvm.org/git/clang-tools-extra.git llvm/tools/clang/tools/clang-tools-extra && git clone --depth=1 https://git.llvm.org/git/compiler-rt.git llvm/projects/compiler-rt && git clone --depth=1 https://git.llvm.org/git/libcxx.git llvm/projects/libcxx && git clone --depth=1 https://git.llvm.org/git/libcxxabi.git llvm/projects/libcxxabi
-RUN mkdir /usr/local/src/build && cd /usr/local/src/build && cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) all install
+RUN mkdir /usr/local/src/build && cd /usr/local/src/build && cmake3 -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm 
+RUN cd /usr/local/src/build && make -j$(grep -c ^processor /proc/cpuinfo) all install
 
 #
-# Data container with vol from binaries
+# Make the image with only /usr/local/clang
 #
 FROM scratch
 COPY --from=build /usr/local/clang /usr/local/clang
 ENTRYPOINT ['-']
 VOLUME /usr/local/clang
+
+LABEL maintainer=raila@illinois.edu                                                      
+LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
+LABEL purpose="bare image with clang tooling in /usr/local/clang"                                                                                   
+LABEL volumes=/usr/local/clang

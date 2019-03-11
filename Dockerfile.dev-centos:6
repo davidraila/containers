@@ -1,0 +1,10 @@
+#
+# centos6 developer tooling
+#
+FROM centos:6
+
+RUN yum -y install yum-plugin-fastestmirror sudo centos-release-scl scl-utils epel-release && yum -y update
+RUN yum -y install devtoolset-7 sclo-git212-git sclo-git212-gitk cmake3 cmake3-gui python27-python
+
+ENTRYPOINT exec /usr/bin/scl enable `/usr/bin/scl -l` bash
+
