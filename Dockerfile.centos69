@@ -1,7 +1,0 @@
-FROM centos:6.9
-
-RUN yum -y update
-
-RUN yum -y install \
-   yum-plugin-fastestmirror sudo
-
