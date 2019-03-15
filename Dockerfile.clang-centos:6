@@ -1,17 +1,15 @@
 #
-# clang binaries in data container
+# Basic centos6 with /usr/local/clang
 #
 FROM centos:6 as build
 RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
 RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27 ccache
+RUN yum -y install libedit-devel libxml2-devel ncurses-devel python-34-devel python27-python-devel rh-python36 rh-python36-scldevel swig  # lldb deps
 
 RUN echo 'cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-project.git' | scl enable $(scl -l) --
 
-RUN echo 'cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\; -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS="install-clang;install-clang-resource-headers"-G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) stage2 install' | scl enable $(scl -l) --
+RUN echo 'cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) stage2 install' | scl enable $(scl -l) --
 
-#
-# Basic centos6 with /usr/local/clang
-#
 FROM centos:6
 RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
 RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27 ccache socat
@@ -19,5 +17,6 @@ RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27 ccache socat
 VOLUME /usr/local/clang
 COPY --from=build /usr/local/clang /usr/local/clang
 ENV PATH=/usr/local/clang/bin:${PATH}
-ENTRYPOINT scl enable $(scl -l) exec
+COPY scl-entrypoint /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/scl-entrypoint"]
 CMD bash
