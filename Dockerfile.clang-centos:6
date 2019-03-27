@@ -3,7 +3,7 @@
 #
 FROM centos:6 as build
 RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
-RUN yum -y install devtoolset-8libstdc++-devel sclo-git25 cmake3 python27 python27-python-devel ccache
+RUN yum -y install devtoolset-8 libstdc++-devel sclo-git25 cmake3 python27 python27-python-devel ccache
 # lldb deps
 RUN yum -y install libedit-devel libxml2-devel ncurses-devel rh-python36-python rh-python36-python-devel rh-python36-scldevel swig
 
