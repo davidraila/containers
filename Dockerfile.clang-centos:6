@@ -2,9 +2,22 @@
 # Basic centos6 with /usr/local/clang
 #
 FROM centos:6 as build
+
+ENV PATH=/usr/local/clang/bin:${PATH}
+
+#
+# scl dev toolset
+#
 RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
+
+#
+# clang deps
+#
 RUN yum -y install devtoolset-8 libstdc++-devel sclo-git25 cmake3 python27 python27-python-devel ccache
+
+#
 # lldb deps
+#
 RUN yum -y install libedit-devel libxml2-devel ncurses-devel rh-python36-python rh-python36-python-devel rh-python36-scldevel swig
 
 #
@@ -26,7 +39,6 @@ RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27 ccache socat
 #FROM scratch
 #VOLUME /usr/local/clang
 COPY --from=build /usr/local/clang /usr/local/clang
-ENV PATH=/usr/local/clang/bin:${PATH}
 COPY scl-entrypoint /usr/local/bin
 ENTRYPOINT ["/usr/local/bin/scl-entrypoint"]
 CMD bash
