@@ -1,4 +1,4 @@
-FROM centos:6.10 as build
+FROM centos:7 as build
 
 #
 # dev tools
@@ -28,6 +28,9 @@ COPY globus_setup_devel /tmp
 RUN /tmp/globus_setup_devel
 
 FROM build
+#
+# Setup scl in bash
+#
 RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
 CMD bash
 LABEL maintainer=raila@illinois.edu                                                      
