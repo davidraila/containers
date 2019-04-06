@@ -12,7 +12,6 @@ RUN yum -y install \
 #
 # Developer tools
 RUN yum -y install \
-   && yum -y install \
       devtoolset-8 \
       rh-git29 \
       python27 \
