@@ -1,13 +1,34 @@
 FROM centos:7 as build
 
 #
-# dev tools
+# repos etc.
 #
-RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
-RUN yum -y install devtoolset-8 rh-git29 ccache
+RUN yum -y install \
+      centos-release-scl \
+      scl-utils \
+      epel-release \
+   && yum -y update
 
 #
-# globus deps
+# Developer tools
+RUN yum -y install \
+   && yum -y install \
+      devtoolset-8 \
+      rh-git29 \
+      python27 \
+      python27-python-devel \
+      python27-python-pip \
+      ccache
+
+#
+# Useful packages
+#
+RUN yum -y install \
+      wget \
+      sudo
+ 
+#
+# globus devel tools and depencies
 #
 RUN yum -y install \
    autogen \
@@ -16,20 +37,34 @@ RUN yum -y install \
    cmake \
    cmake-gui \
    libtool-ltdl-devel \
-   python27 \
    libtool \
    autogen-libopts-devel \
    openssl-devel \
    glibc-utils \
    libtirpc-devel \
    libtool-ltdl
-   
+
+# 
+# install scl in bashrc
+#
+RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
+SHELL [ "bash", "-c", "-l" ]
+
+#
+# Globus sdk and cli
+#
+RUN python -m pip install --upgrade pip setuptools
+RUN python -m pip install globus-cli globus-sdk
+
+#
+# globus install GCS
+#
 COPY globus_setup_devel /tmp
 RUN /tmp/globus_setup_devel
 
 FROM build
 #
-# Setup scl in bash
+# install scl in bashrc in destination build
 #
 RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
 CMD bash

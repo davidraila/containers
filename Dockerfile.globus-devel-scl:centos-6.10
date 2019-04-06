@@ -61,8 +61,8 @@ RUN pip install globus-cli globus-sdk
 #
 # globus install GCS
 #
-COPY globus_setup_devel /tmp
-RUN /tmp/globus_setup_devel
+COPY globus_install_gcs /tmp
+RUN /tmp/globus_install_gcs
 
 FROM build
 CMD bash

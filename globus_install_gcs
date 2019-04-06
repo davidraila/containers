@@ -1,0 +1,8 @@
+#!/bin/bash
+curl -LOs https://downloads.globus.org/toolkit/globus-connect-server/globus-connect-server-repo-latest.noarch.rpm
+rpm --import https://downloads.globus.org/toolkit/gt6/stable/repo/rpm/RPM-GPG-KEY-Globus
+yum -y install globus-connect-server-repo-latest.noarch.rpm
+yum -y install epel-release
+yum -y install yum-plugin-priorities
+yum -y install globus-connect-server
+yum -y install globus-gridftp-server-devel
