@@ -61,6 +61,11 @@ RUN python -m pip install globus-cli globus-sdk
 COPY globus_install_gcs /tmp
 RUN /tmp/globus_install_gcs
 
+#
+# Globus devel packages, the ones that are not broken
+#
+RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager | grep "^globus" | awk '{print $1}'`
+
 FROM build
 #
 # install scl in bashrc in destination build
