@@ -16,12 +16,12 @@ RUN \
   && yum -y update \
   && yum -y install \
     devtoolset-8 \
-    rh-git29 \
-    python27-scldevel \
-    python27-python-devel \
-    python27-python-pip
+    rh-git29
+    #python27-scldevel \
+    #python27-python-devel \
+    #python27-python-pip
     #python36-scldevel
-    
+
 # 
 # setup scl for bash
 #
@@ -54,8 +54,9 @@ RUN \
     ncurses-devel \
     rh-python36-python \
     rh-python36-python-devel \
-    rh-python36-scldevel \
+    rh-python36-python-pip \
     swig
+    #rh-python36-scldevel \
 
 #
 # z3 install at /usr/local/clang
