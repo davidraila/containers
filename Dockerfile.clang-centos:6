@@ -20,11 +20,6 @@ RUN \
     #python27-python-pip
     #python36-scldevel
 
-# 
-# setup scl for bash
-#
-RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
-SHELL [ "bash", "-c", "-l" ]
 
 #
 # Useful packages
@@ -55,6 +50,12 @@ RUN \
     rh-python36-python-pip \
     swig
     #rh-python36-scldevel \
+
+# 
+# setup scl for bash
+#
+RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
+SHELL [ "bash", "-c", "-l" ]
 
 #
 # z3 install at /usr/local/clang
