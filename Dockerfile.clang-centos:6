@@ -1,24 +1,61 @@
 #
 # Basic centos6 with /usr/local/clang
 #
-FROM centos:6 as build
+FROM centos:6.10 as build
 
-ENV PATH=/usr/local/clang/bin:${PATH}
+#ENV PATH=/usr/local/clang/bin:${PATH}
 
 #
 # scl dev toolset
 #
-RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
+RUN \
+  yum -y install \
+    centos-release-scl \
+    scl-utils \
+    epel-release \
+  && yum -y update \
+  && yum -y install \
+    devtoolset-8 \
+    rh-git29 \
+    python27-scldevel \
+    python27-python-devel \
+    python27-python-pip
+    #python36-scldevel
+    
+# 
+# setup scl for bash
+#
+RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
+SHELL [ "bash", "-c", "-l" ]
+
+#
+# Useful packages
+#
+RUN \
+  yum -y install \
+    wget \
+    sudo
 
 #
 # clang deps
 #
-RUN yum -y install devtoolset-8 libstdc++-devel sclo-git25 cmake3 python27 python27-python-devel ccache
+RUN \
+  yum -y install \
+    cmake3 \
+    ccache
 
 #
 # lldb deps
 #
-RUN yum -y install libedit-devel libxml2-devel ncurses-devel rh-python36-python rh-python36-python-devel rh-python36-scldevel swig
+RUN \
+  yum -y install \
+    libedit-devel \
+    libxml2-devel \
+    ncurses-devel \
+    rh-python36-python \
+    rh-python36-python-devel \
+    rh-python36-scldevel \
+    swig
 
 #
 # z3 install at /usr/local/clang
