@@ -61,9 +61,6 @@ SHELL [ "bash", "-c", "-l" ]
 #
 # z3 install at /usr/local/clang
 #
-RUN \
-  python3 -m pip install --upgrade pip
-  python3 -m pip install argparse
 
 RUN \
   cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
