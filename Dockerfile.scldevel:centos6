@@ -1,0 +1,26 @@
+FROM centos:6.10 as base
+
+RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
+RUN yum -y install devtoolset-8 sclo-git25 ccache
+
+RUN yum -y install \
+   autogen \
+   autoconf \
+   automake \
+   cmake \
+   cmake-gui \
+   libtool-ltdl-devel \
+   python27 \
+   libtool \
+   autogen-libopts-devel \
+   openssl-devel \
+   glibc-utils \
+   libtirpc-devel \
+   libtool-ltdl
+   
+COPY globus_setup_devel /tmp
+RUN /tmp/globus_setup_devel
+
+COPY scl-entrypoint /usr/local/bin
+ENTRYPOINT ["/usr/local/bin/scl-entrypoint"]
+
