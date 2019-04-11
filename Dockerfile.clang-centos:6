@@ -45,6 +45,7 @@ RUN \
     libedit-devel \
     libxml2-devel \
     ncurses-devel \
+    python27 \
     rh-python36-python \
     rh-python36-python-devel \
     rh-python36-python-pip \
