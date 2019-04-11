@@ -60,6 +60,10 @@ RUN \
 # z3 install at /usr/local/clang
 #
 RUN \
+  pip install --upgrade pip
+  pip install argparse
+
+RUN \
   cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
 RUN \
   cd /usr/local/src/z3 && mkdir build && cd build && cmake3 -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang .. && make -j$(grep -c ^processor /proc/cpuinfo) install
