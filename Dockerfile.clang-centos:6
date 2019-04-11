@@ -1,9 +1,7 @@
 #
-# Basic centos6 with /usr/local/clang
+# /usr/local/clang for centos6,
 #
 FROM centos:6.10 as build
-
-#ENV PATH=/usr/local/clang/bin:${PATH}
 
 #
 # scl dev toolset
@@ -61,22 +59,17 @@ RUN \
 #
 # z3 install at /usr/local/clang
 #
-RUN echo 'cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git' | scl enable $(scl -l) --
-RUN echo 'cd /usr/local/src/z3 && mkdir build && cd build && cmake3 -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang .. && make -j$(grep -c ^processor /proc/cpuinfo) install' | scl enable $(scl -l) --
+RUN \
+  cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
+RUN \
+  cd /usr/local/src/z3 && mkdir build && cd build && cmake3 -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang .. && make -j$(grep -c ^processor /proc/cpuinfo) install
 
 #
 # clang build in /usr/local/clang
 #
-RUN echo 'cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-project.git' | scl enable $(scl -l) --
+RUN cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-project.git
 
-RUN echo 'cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) stage2 install' | scl enable $(scl -l) --
+RUN cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && make -j$(grep -c ^processor /proc/cpuinfo) stage2 install
 
-FROM centos:6
-RUN yum -y install centos-release-scl scl-utils epel-release && yum -y update
-RUN yum -y install devtoolset-7 sclo-git25 cmake3 python27 ccache socat
-#FROM scratch
-#VOLUME /usr/local/clang
+FROM centos:6.10
 COPY --from=build /usr/local/clang /usr/local/clang
-COPY scl-entrypoint /usr/local/bin
-ENTRYPOINT ["/usr/local/bin/scl-entrypoint"]
-CMD bash
