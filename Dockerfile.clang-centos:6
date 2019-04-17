@@ -55,7 +55,7 @@ RUN \
 #
 # Get ninja build tool
 #
-RUN (cd /usr/local/bin && curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip && unzip ninja.zip && rm -f ninja.zip)
+RUN (cd /usr/bin && curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip && unzip ninja.zip && rm -f ninja.zip)
 
 # 
 # setup scl for bash
