@@ -52,11 +52,6 @@ RUN \
     swig
     #rh-python36-scldevel \
 
-#
-# Get ninja build tool
-#
-RUN (cd /usr/bin && curl -L -o ninja.zip https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-linux.zip && unzip ninja.zip && rm -f ninja.zip)
-
 # 
 # setup scl for bash
 #
@@ -64,9 +59,18 @@ RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; do
 SHELL [ "bash", "-c", "-l" ]
 
 #
+# Build ninja
+#
+RUN \
+  cd /usr/local/src && \
+  git clone --depth=1 https://github.com/ninja-build/ninja.git && \
+  cd ninja && \
+  ./configure.py --bootstrap && \
+  install ninja /usr/local/bin
+
+#
 # z3 install at /usr/local/clang
 #
-
 RUN \
   cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
 RUN \
