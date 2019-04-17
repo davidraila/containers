@@ -77,7 +77,7 @@ RUN \
 #
 RUN cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-project.git
 
-RUN cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && jinja stage2 install
+RUN cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && ninja stage2 install
 
 FROM centos:6.10
 COPY --from=build /usr/local/clang /usr/local/clang
