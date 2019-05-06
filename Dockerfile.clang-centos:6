@@ -59,7 +59,7 @@ RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; do
 SHELL [ "bash", "-c", "-l" ]
 
 #
-# Build ninja
+# Build/install ninja in /usr/local/bin
 #
 RUN \
   cd /usr/local/src && \
@@ -69,7 +69,7 @@ RUN \
   install ninja /usr/local/bin
 
 #
-# z3 install at /usr/local/clang
+# build/install z3 in /usr/local/clang
 #
 RUN \
   cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
