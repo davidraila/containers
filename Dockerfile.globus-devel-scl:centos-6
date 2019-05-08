@@ -1,4 +1,4 @@
-FROM centos:6.10 as build
+FROM centos:6
 
 #
 # repos
@@ -69,7 +69,9 @@ RUN /tmp/globus_install_gcs
 #
 RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager | grep "^globus" | awk '{print $1}'`
 
-FROM build
+FROM davidraila/clang:centos-6 as clang
+COPY --from=clang /usr/local/clang /usr/local/clang
+
 CMD bash
 LABEL maintainer=raila@illinois.edu                                                      
 LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
