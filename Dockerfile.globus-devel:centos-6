@@ -55,7 +55,7 @@ RUN yum -y install \
 # setup scl for bash
 #
 RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
-SHELL [ "bash", "-c", "-l" ]
+SHELL [ "/bin/bash", "-c", "-l" ]
 
 #
 # Globus sdk and cli
@@ -77,7 +77,7 @@ RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager
 COPY --from=davidraila/clang:centos-6 /usr/local/clang /usr/local/clang
 ENV PATH=/usr/local/clang/bin:${PATH}
 
-SHELL [ "bash" ]
-CMD bash
+SHELL [ "/bin/bash" ]
+CMD /bin/bash
 LABEL maintainer=raila@illinois.edu                                                      
 LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
