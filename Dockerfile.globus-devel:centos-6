@@ -20,9 +20,6 @@ RUN \
       rh-python36-python \
       rh-python36-python-devel \
       rh-python36-python-pip \
-      #python27 \
-      #python27-python-devel \
-      #python27-python-pip \
       ccache
 
 #
