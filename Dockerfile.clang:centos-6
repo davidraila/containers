@@ -30,6 +30,7 @@ RUN \
 RUN \
   yum -y install \
     re2c \
+    libatomic \
     cmake3 \
     ccache
 
