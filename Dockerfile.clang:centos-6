@@ -1,7 +1,7 @@
 #
 # /usr/local/clang for centos6,
 #
-FROM centos:6.10 as build
+FROM centos:6 as build
 
 #
 # scl dev toolset
@@ -15,11 +15,6 @@ RUN \
   && yum -y install \
     devtoolset-8 \
     rh-git29
-    #python27-scldevel \
-    #python27-python-devel \
-    #python27-python-pip
-    #python36-scldevel
-
 
 #
 # Useful packages
@@ -50,7 +45,6 @@ RUN \
     rh-python36-python-devel \
     rh-python36-python-pip \
     swig
-    #rh-python36-scldevel \
 
 # 
 # setup scl for bash
@@ -83,5 +77,5 @@ RUN cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-projec
 
 RUN cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && ninja stage2 install
 
-FROM centos:6.10
+FROM centos:6
 COPY --from=build /usr/local/clang /usr/local/clang
