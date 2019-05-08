@@ -27,6 +27,7 @@ RUN \
 #
 RUN yum -y install \
       wget \
+      socat \
       sudo
 
 #
@@ -73,6 +74,7 @@ RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager
 COPY --from=davidraila/clang:centos-6 /usr/local/clang /usr/local/clang
 ENV PATH=/usr/local/clang/bin:${PATH}
 
+SHELL [ "bash" ]
 CMD bash
 LABEL maintainer=raila@illinois.edu                                                      
 LABEL organization="NCSA SET Group: Storage Enabling Technologies Group, National Center for Supercomputing Applications"                                                         
