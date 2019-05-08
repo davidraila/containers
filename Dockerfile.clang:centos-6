@@ -29,7 +29,7 @@ RUN \
 #
 RUN \
   yum -y install \
-    re2 \
+    re2c \
     cmake3 \
     ccache
 
