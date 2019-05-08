@@ -43,6 +43,7 @@ RUN yum -y install \
    autogen-libopts-devel \
    openssl-devel \
    glibc-utils \
+   ksh \
    libtirpc-devel \
    libtool-ltdl
 
