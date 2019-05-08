@@ -69,7 +69,8 @@ RUN /tmp/globus_install_gcs
 #
 RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager | grep "^globus" | awk '{print $1}'`
 
-COPY --from=davidraila/clang:centos-6 /usr/local/clang /usr/local
+COPY --from=davidraila/clang:centos-6 /usr/local/clang /usr/local/clang
+ENV PATH=/usr/local/clang/bin:${PATH}
 
 CMD bash
 LABEL maintainer=raila@illinois.edu                                                      
