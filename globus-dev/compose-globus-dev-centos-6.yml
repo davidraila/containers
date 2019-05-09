@@ -1,0 +1,43 @@
+
+
+version: '3'
+services:
+  globus-devel:
+    image: davidraila/globus-devel:centos-6
+    command: socat tcp-listen:5000,reuseaddr exec:clangd
+    user: ${UID}
+    ports:
+     - "5000:5000"
+    volumes:
+     - hpss_7.5.3.0-20190423.u4.el6.x86_64:/opt/hpss
+     - ${HOME}:${HOME}
+    #links:
+     #- code-insiders
+    #environment:
+     #- DATADOG_HOST=datadog # used by the web app to initialize the Datadog library
+  code-insiders:
+    image: davidraila/code-insiders
+    command: code-insiders
+    user: ${UID}
+  # agent section
+    #build: datadog
+    links:
+     - globus-devel 
+    environment:
+     - DISPLAY
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/snd:/dev/snd
+    tty: true
+    stdin_open: true
+    volumes:
+     - hpss_7.5.3.0-20190423.u4.el6.x86_64:/opt/hpss
+     - ${HOME}:${HOME}
+     - /tmp/.X11-unix:/tmp/.X11-unix
+     - /run/user/${UID}/pulse:/run/user/${UID}/pulse
+     - /etc/machine-id:/etc/machine-id
+     - /dev/shm:/dev/shm
+     #- /proc/:/host/proc/:ro
+     #- /sys/fs/cgroup:/host/sys/fs/cgroup:ro
+volumes:
+  hpss_7.5.3.0-20190423.u4.el6.x86_64:
