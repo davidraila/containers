@@ -17,7 +17,7 @@ services:
      #- DATADOG_HOST=datadog # used by the web app to initialize the Datadog library
   code-insiders:
     image: davidraila/code-insiders
-    command: code-insiders
+    command: code-insiders;sleep infinity
     user: ${UID}
   # agent section
     #build: datadog
@@ -41,3 +41,4 @@ services:
      #- /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 volumes:
   hpss_7.5.3.0-20190423.u4.el6.x86_64:
+    external: true
