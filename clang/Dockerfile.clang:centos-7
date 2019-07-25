@@ -1,0 +1,83 @@
+#
+# /usr/local/clang for centos6,
+#
+FROM centos:6 as build
+
+#
+# scl dev toolset
+#
+RUN \
+  yum -y install \
+    centos-release-scl \
+    scl-utils \
+    epel-release \
+  && yum -y update \
+  && yum -y install \
+    devtoolset-8 \
+    rh-git29
+
+#
+# Useful packages
+#
+RUN \
+  yum -y install \
+    wget \
+    sudo
+
+#
+# clang deps
+#
+RUN \
+  yum -y install \
+    re2c \
+    libatomic \
+    cmake3 \
+    ccache
+
+#
+# lldb deps
+#
+RUN \
+  yum -y install \
+    libedit-devel \
+    libxml2-devel \
+    ncurses-devel \
+    python27 \
+    rh-python36-python \
+    rh-python36-python-devel \
+    rh-python36-python-pip \
+    swig
+
+# 
+# setup scl for bash
+#
+RUN for i in $(scl -l); do echo "source scl_source enable $i" >> /etc/bashrc; done
+SHELL [ "bash", "-c", "-l" ]
+
+#
+# Build/install ninja in /usr/local/bin
+#
+RUN \
+  cd /usr/local/src && \
+  git clone --depth=1 https://github.com/ninja-build/ninja.git && \
+  cd ninja && \
+  ./configure.py --bootstrap && \
+  install ninja /usr/local/bin
+
+#
+# build/install z3 in /usr/local/clang
+#
+RUN \
+  cd /usr/local/src && git clone --depth=1 https://github.com/Z3Prover/z3.git
+RUN \
+  cd /usr/local/src/z3 && mkdir build && cd build && cmake3 -G Unix\ Makefiles -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang .. && make -j$(grep -c ^processor /proc/cpuinfo) install
+
+#
+# clang build in /usr/local/clang
+#
+RUN cd /usr/local/src && git clone --depth=1 https://github.com/llvm/llvm-project.git
+
+RUN cd /usr/local/src/llvm-project && mkdir build && cd build && cmake3 -DLLVM_LIBDIR_SUFFIX=64 -DLLVM_ENABLE_PROJECTS=clang\;libcxx\;libcxxabi\;libunwind\;clang-tools-extra\;compiler-rt\;lld\;lldb -DLLVM_TARGETS_TO_BUILD=Native -DCMAKE_BUILD_TYPE=Release -DBOOTSTRAP_CMAKE_BUILD_TYPE=Release -DCLANG_ENABLE_BOOTSTRAP=ON -DCLANG_BOOTSTRAP_TARGETS=install-clang\;install-clang-resource-headers -G Ninja -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/clang ../llvm && ninja stage2 install
+
+FROM centos:6
+COPY --from=build /usr/local/clang /usr/local/clang
