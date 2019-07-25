@@ -8,6 +8,9 @@ FROM centos:7 as build
 #
 RUN \
   yum -y install \
+    yum-plugin-fastestmirror 
+RUN \
+  yum -y install \
     centos-release-scl \
     scl-utils \
     epel-release \
