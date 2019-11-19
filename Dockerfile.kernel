@@ -1,0 +1,9 @@
+FROM fedora 
+
+RUN \
+	dnf -y install \
+		git curl gcc make openssl-devel bc elfutils-libelf-devel hostname \
+		rsync diffutils findutils ccache rpm-build flex bison \
+	&& dnf -y clean all
+
+WORKDIR /root
