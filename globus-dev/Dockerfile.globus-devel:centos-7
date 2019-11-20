@@ -18,7 +18,8 @@ RUN yum -y install \
       python27-python-devel \
       python27-python-pip \
       boost148 \
-      ccache
+      ccache \
+      patch
 
 #
 # Useful packages

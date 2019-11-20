@@ -21,7 +21,8 @@ RUN \
       rh-python36-python-devel \
       rh-python36-python-pip \
       boost148 \
-      ccache
+      ccache \ 
+      patch
 
 #
 # Useful packages
