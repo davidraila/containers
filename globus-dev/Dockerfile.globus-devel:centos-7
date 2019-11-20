@@ -1,4 +1,4 @@
-FROM centos:7 as build
+FROM centos:7
 
 #
 # repos etc.
@@ -68,9 +68,11 @@ RUN /tmp/globus_install_gcs
 #
 RUN yum -y install `yum list available globus\*devel\* | grep -v xio-net-manager | grep "^globus" | awk '{print $1}'`
 
+COPY --from=davidraila/clang:centos-7 /usr/local/clang /usr/local/clang
+ENV PATH=/usr/local/clang/bin:${PATH
+
 RUN yum -y clean all
 
-FROM build
 #
 # install scl in bashrc in destination build
 #
